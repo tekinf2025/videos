@@ -1,0 +1,15 @@
+Crie uma página com design moderno e intuitivo para uma loja de streaming chamada Tekinformática. Utilize cores com tons de azul, cinza escuro e toques de ciano, preciso hospedar links mp4 para meus clientes acessarem.
+Exemplo:
+Demonstração aplicativo P2x, https://tekinf2025.github.io/videortv/p2x.mp4
+Demonstração aplicativo P2 Server, https://tekinf2025.github.io/videortv/p2server.mp4
+Demonstração aplicativo RTv, https://tekinf2025.github.io/videortv/rtv.mp4
+
+WhatsApp, (21) 97628-6027, "https://wa.me/5521976286027, Enviar mensagem
+Email, "mailto:tekin.formatica@hotmail.com", Enviar e-mail
+Rodapé, Repita a mesma logo criada no topo com as mesmas configurações
+@ 2011 Tekinformática - Todos os direitos reservados.
+
+
+*O layout e designer ficou muito bom mas quero que o cliente a assista direto da página clicando no play ou em tela cheia abrindo em outra aba, não quero que o cliente baixa o vídeo que criei.
+
+Ficou perfeito o projeto e já salvei pra utilizar mas queria deixa a I.A modificasse design por um mais inovador para a Tekinformática, mantendo todas as informações e funcionalidades, mas com um visual mais moderno e arrojado.

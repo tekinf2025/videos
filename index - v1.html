@@ -1,0 +1,441 @@
+
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Streaming - Tekinformática</title>
+    <link rel="icon" href="https://i.imgur.com/qgmrByn.png">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap');
+        
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background-color: #121921;
+            color: #e0e6ed;
+        }
+        
+        .gradient-text {
+            background: linear-gradient(90deg, #4facfe 0%, #00f2fe 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+        
+        .video-card {
+            background: linear-gradient(145deg, #1a2430 0%, #131b25 100%);
+            transition: all 0.3s ease;
+            border: 1px solid rgba(79, 172, 254, 0.1);
+        }
+        
+        .video-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 242, 254, 0.1);
+            border: 1px solid rgba(79, 172, 254, 0.3);
+        }
+        
+        .btn-primary {
+            background: linear-gradient(90deg, #4facfe 0%, #00f2fe 100%);
+            transition: all 0.3s ease;
+        }
+        
+        .btn-primary:hover {
+            opacity: 0.9;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 242, 254, 0.2);
+        }
+        
+        .contact-card {
+            background: linear-gradient(145deg, #1a2430 0%, #131b25 100%);
+            border: 1px solid rgba(79, 172, 254, 0.1);
+            transition: all 0.3s ease;
+        }
+        
+        .contact-card:hover {
+            border: 1px solid rgba(79, 172, 254, 0.3);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+        
+        .video-container {
+            position: relative;
+            overflow: hidden;
+            border-radius: 8px 8px 0 0;
+        }
+        
+        .video-container video {
+            width: 100%;
+            display: block;
+            cursor: pointer;
+        }
+        
+        .video-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.4);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+        
+        .video-overlay:hover {
+            background: rgba(0, 0, 0, 0.2);
+        }
+        
+        .play-button {
+            width: 70px;
+            height: 70px;
+            background: rgba(79, 172, 254, 0.8);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+        
+        .play-button:hover {
+            transform: scale(1.1);
+            background: rgba(0, 242, 254, 0.8);
+        }
+        
+        .video-controls {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px;
+            background: rgba(19, 27, 37, 0.8);
+            border-top: 1px solid rgba(79, 172, 254, 0.2);
+        }
+        
+        .video-controls button {
+            background: none;
+            border: none;
+            color: #e0e6ed;
+            cursor: pointer;
+            padding: 5px 10px;
+            transition: all 0.2s ease;
+        }
+        
+        .video-controls button:hover {
+            color: #4facfe;
+        }
+        
+        /* Custom video controls styling */
+        video::-webkit-media-controls-panel {
+            background: linear-gradient(to top, rgba(19, 27, 37, 0.9), rgba(19, 27, 37, 0.7));
+        }
+        
+        video::-webkit-media-controls-play-button {
+            background-color: #4facfe;
+            border-radius: 50%;
+        }
+        
+        video::-webkit-media-controls-timeline {
+            background-color: rgba(79, 172, 254, 0.3);
+            border-radius: 25px;
+            margin: 0 10px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="bg-gray-900 border-b border-gray-800">
+        <div class="container mx-auto px-4 py-6">
+            <div class="flex flex-col md:flex-row justify-between items-center">
+                <div class="flex items-center mb-4 md:mb-0">
+                    <div class="text-3xl font-bold mr-2">
+                        <span class="gradient-text">Tekin</span><span class="text-white">formática</span>
+                    </div>
+                    <svg class="w-8 h-8 ml-2" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M15 4.5V9.5L20 7L15 4.5Z" fill="#4facfe"/>
+                        <path d="M4 8H12V10H4V8Z" fill="#00f2fe"/>
+                        <path d="M4 12H20V14H4V12Z" fill="#4facfe"/>
+                        <path d="M4 16H12V18H4V16Z" fill="#00f2fe"/>
+                        <path d="M2 5C2 4.44772 2.44772 4 3 4H21C21.5523 4 22 4.44772 22 5V19C22 19.5523 21.5523 20 21 20H3C2.44772 20 2 19.5523 2 19V5Z" stroke="#4facfe" stroke-width="1.5"/>
+                    </svg>
+                </div>
+                <nav>
+                    <ul class="flex space-x-6">
+                        <li><a href="#videos" class="text-gray-300 hover:text-cyan-400 transition-colors">Vídeos</a></li>
+                        <li><a href="#contato" class="text-gray-300 hover:text-cyan-400 transition-colors">Contato</a></li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="py-16 bg-gradient-to-b from-gray-900 to-gray-800">
+        <div class="container mx-auto px-4 text-center">
+            <h1 class="text-4xl md:text-5xl font-bold mb-6">
+                Sua <span class="gradient-text">Plataforma</span> de Streaming
+            </h1>
+            <p class="text-xl text-gray-300 mb-8 max-w-2xl mx-auto">
+                Acesse demonstrações dos nossos aplicativos e descubra como a Tekinformática pode transformar sua experiência de streaming.
+            </p>
+            <a href="#videos" class="btn-primary px-8 py-3 rounded-full text-white font-medium inline-block">
+                Ver Demonstrações
+            </a>
+        </div>
+    </section>
+
+    <!-- Videos Section -->
+    <section id="videos" class="py-16 bg-gray-800">
+        <div class="container mx-auto px-4">
+            <h2 class="text-3xl font-bold mb-12 text-center">
+                <span class="gradient-text">Demonstrações</span> Disponíveis
+            </h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Video Card 1 -->
+                <div class="video-card rounded-xl overflow-hidden">
+                    <div class="video-container">
+                        <video id="video1" class="w-full h-64 object-cover" poster="" controlsList="nodownload" disablePictureInPicture>
+                            <source src="https://tekinf2025.github.io/videortv/p2x.mp4" type="video/mp4">
+                            Seu navegador não suporta vídeos HTML5.
+                        </video>
+                        <div class="video-overlay" id="overlay1">
+                            <div class="play-button">
+                                <i class="fas fa-play text-white text-2xl"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="video-controls">
+                        <button class="play-pause-btn" data-video="video1">
+                            <i class="fas fa-play mr-2"></i> Reproduzir
+                        </button>
+                        <button class="fullscreen-btn" data-video="video1">
+                            <i class="fas fa-expand"></i> Tela cheia
+                        </button>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-semibold mb-2">Demonstração aplicativo P2X</h3>
+                        <p class="text-gray-400">Descubra as vantagens do aplicativo P2X, servidor com mais de 90 mil conteúdos.</p>
+                        <p class="text-gray-400">R$ 30,00 por mês.</p>
+                    </div>
+                </div>
+
+                <!-- Video Card 2 -->
+                <div class="video-card rounded-xl overflow-hidden">
+                    <div class="video-container">
+                        <video id="video2" class="w-full h-64 object-cover" poster="" controlsList="nodownload" disablePictureInPicture>
+                            <source src="https://tekinf2025.github.io/videortv/p2server.mp4" type="video/mp4">
+                            Seu navegador não suporta vídeos HTML5.
+                        </video>
+                        <div class="video-overlay" id="overlay2">
+                            <div class="play-button">
+                                <i class="fas fa-play text-white text-2xl"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="video-controls">
+                        <button class="play-pause-btn" data-video="video2">
+                            <i class="fas fa-play mr-2"></i> Reproduzir
+                        </button>
+                        <button class="fullscreen-btn" data-video="video2">
+                            <i class="fas fa-expand"></i> Tela cheia
+                        </button>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-semibold mb-2">Demonstração aplicativo P2 Server</h3>
+                        <p class="text-gray-400">Descubra as vantagens do aplicativo P2S, servidor com mais de 110 mil conteúdos.</p>
+                        <p class="text-gray-400">R$ 35,00 por mês.</p>
+                    </div>
+                </div>
+
+                <!-- Video Card 3 -->
+                <div class="video-card rounded-xl overflow-hidden">
+                    <div class="video-container">
+                        <video id="video3" class="w-full h-64 object-cover" poster="" controlsList="nodownload" disablePictureInPicture>
+                            <source src="https://tekinf2025.github.io/videortv/rtv.mp4" type="video/mp4">
+                            Seu navegador não suporta vídeos HTML5.
+                        </video>
+                        <div class="video-overlay" id="overlay3">
+                            <div class="play-button">
+                                <i class="fas fa-play text-white text-2xl"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="video-controls">
+                        <button class="play-pause-btn" data-video="video3">
+                            <i class="fas fa-play mr-2"></i> Reproduzir
+                        </button>
+                        <button class="fullscreen-btn" data-video="video3">
+                            <i class="fas fa-expand"></i> Tela cheia
+                        </button>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-semibold mb-2">Demonstração aplicativo RTV</h3>
+                        <p class="text-gray-400">Descubra as vantagens do aplicativo RTV, servidor com mais de 150 mil conteúdos.</p>
+                        <p class="text-gray-400">R$ 40,00 por mês.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contato" class="py-16 bg-gray-900">
+        <div class="container mx-auto px-4">
+            <h2 class="text-3xl font-bold mb-12 text-center">
+                Entre em <span class="gradient-text">Contato</span>
+            </h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+                <!-- WhatsApp -->
+                <div class="contact-card rounded-xl p-6 flex items-center">
+                    <div class="w-12 h-12 rounded-full bg-green-500 flex items-center justify-center mr-4 flex-shrink-0">
+                        <i class="fab fa-whatsapp text-white text-2xl"></i>
+                    </div>
+                    <div class="flex-grow">
+                        <h3 class="text-xl font-semibold mb-1">WhatsApp</h3>
+                        <p class="text-gray-400 mb-3">(21) 97628-6027</p>
+                        <a href="https://wa.me/5521976286027" target="_blank" class="btn-primary px-4 py-2 rounded-lg text-white font-medium inline-block">
+                            <i class="fas fa-comment mr-2"></i> Enviar mensagem
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- Email -->
+                <div class="contact-card rounded-xl p-6 flex items-center">
+                    <div class="w-12 h-12 rounded-full bg-blue-500 flex items-center justify-center mr-4 flex-shrink-0">
+                        <i class="fas fa-envelope text-white text-xl"></i>
+                    </div>
+                    <div class="flex-grow">
+                        <h3 class="text-xl font-semibold mb-1">Email</h3>
+                        <p class="text-gray-400 mb-3">tekin.formatica@hotmail.com</p>
+                        <a href="mailto:tekin.formatica@hotmail.com" class="btn-primary px-4 py-2 rounded-lg text-white font-medium inline-block">
+                            <i class="fas fa-paper-plane mr-2"></i> Enviar e-mail
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 border-t border-gray-800 py-8">
+        <div class="container mx-auto px-4">
+            <div class="flex flex-col items-center">
+                <div class="flex items-center mb-6">
+                    <div class="text-2xl font-bold mr-2">
+                        <span class="gradient-text">Tekin</span><span class="text-white">formática</span>
+                    </div>
+                    <svg class="w-6 h-6 ml-2" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M15 4.5V9.5L20 7L15 4.5Z" fill="#4facfe"/>
+                        <path d="M4 8H12V10H4V8Z" fill="#00f2fe"/>
+                        <path d="M4 12H20V14H4V12Z" fill="#4facfe"/>
+                        <path d="M4 16H12V18H4V16Z" fill="#00f2fe"/>
+                        <path d="M2 5C2 4.44772 2.44772 4 3 4H21C21.5523 4 22 4.44772 22 5V19C22 19.5523 21.5523 20 21 20H3C2.44772 20 2 19.5523 2 19V5Z" stroke="#4facfe" stroke-width="1.5"/>
+                    </svg>
+                </div>
+                <p class="text-gray-500 text-sm">
+                    &copy; 2011 Tekinformática - Todos os direitos reservados.
+                </p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+        
+        // Video player functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            // Handle video overlays
+            const videoOverlays = document.querySelectorAll('.video-overlay');
+            videoOverlays.forEach(overlay => {
+                overlay.addEventListener('click', function() {
+                    const videoId = this.id.replace('overlay', 'video');
+                    const video = document.getElementById(videoId);
+                    
+                    if (video.paused) {
+                        video.play();
+                        this.style.opacity = '0';
+                    } else {
+                        video.pause();
+                        this.style.opacity = '1';
+                    }
+                });
+            });
+            
+            // Handle play/pause buttons
+            const playPauseButtons = document.querySelectorAll('.play-pause-btn');
+            playPauseButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const videoId = this.getAttribute('data-video');
+                    const video = document.getElementById(videoId);
+                    const overlay = document.getElementById('overlay' + videoId.replace('video', ''));
+                    const icon = this.querySelector('i');
+                    
+                    if (video.paused) {
+                        video.play();
+                        overlay.style.opacity = '0';
+                        icon.classList.remove('fa-play');
+                        icon.classList.add('fa-pause');
+                        this.innerHTML = '<i class="fas fa-pause mr-2"></i> Pausar';
+                    } else {
+                        video.pause();
+                        overlay.style.opacity = '1';
+                        icon.classList.remove('fa-pause');
+                        icon.classList.add('fa-play');
+                        this.innerHTML = '<i class="fas fa-play mr-2"></i> Reproduzir';
+                    }
+                });
+            });
+            
+            // Handle fullscreen buttons
+            const fullscreenButtons = document.querySelectorAll('.fullscreen-btn');
+            fullscreenButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const videoId = this.getAttribute('data-video');
+                    const video = document.getElementById(videoId);
+                    
+                    if (video.requestFullscreen) {
+                        video.requestFullscreen();
+                    } else if (video.webkitRequestFullscreen) { /* Safari */
+                        video.webkitRequestFullscreen();
+                    } else if (video.msRequestFullscreen) { /* IE11 */
+                        video.msRequestFullscreen();
+                    }
+                    
+                    // Start playing when entering fullscreen
+                    video.play();
+                    document.getElementById('overlay' + videoId.replace('video', '')).style.opacity = '0';
+                });
+            });
+            
+            // Reset overlay when video ends
+            const videos = document.querySelectorAll('video');
+            videos.forEach(video => {
+                video.addEventListener('ended', function() {
+                    const videoId = this.id;
+                    const overlay = document.getElementById('overlay' + videoId.replace('video', ''));
+                    const button = document.querySelector(`.play-pause-btn[data-video="${videoId}"]`);
+                    
+                    overlay.style.opacity = '1';
+                    button.innerHTML = '<i class="fas fa-play mr-2"></i> Reproduzir';
+                });
+                
+                // Prevent right-click on videos to disable download
+                video.addEventListener('contextmenu', function(e) {
+                    e.preventDefault();
+                    return false;
+                });
+            });
+        });
+    </script>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9474a7b813166509',t:'MTc0ODUwNzY5My4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>

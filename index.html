@@ -1,0 +1,673 @@
+
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Streaming - Tekinformática</title>
+    <link rel="icon" href="https://i.imgur.com/qgmrByn.png">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap');
+        
+        :root {
+            --primary: #6366f1;
+            --primary-dark: #4f46e5;
+            --secondary: #06b6d4;
+            --accent: #8b5cf6;
+            --dark: #0f172a;
+            --darker: #020617;
+            --light: #f8fafc;
+            --glass: rgba(15, 23, 42, 0.7);
+        }
+        
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        
+        body {
+            font-family: 'Outfit', sans-serif;
+            background-color: var(--darker);
+            color: var(--light);
+            overflow-x: hidden;
+        }
+        
+        .bg-grid {
+            background-image: 
+                radial-gradient(rgba(99, 102, 241, 0.15) 2px, transparent 2px),
+                radial-gradient(rgba(99, 102, 241, 0.1) 2px, transparent 2px);
+            background-size: 50px 50px;
+            background-position: 0 0, 25px 25px;
+            animation: gridMove 120s linear infinite;
+        }
+        
+        @keyframes gridMove {
+            0% {
+                background-position: 0 0, 25px 25px;
+            }
+            100% {
+                background-position: 1000px 1000px, 1025px 1025px;
+            }
+        }
+        
+        .gradient-text {
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+        
+        .gradient-border {
+            position: relative;
+            border-radius: 16px;
+            padding: 1px;
+            background: linear-gradient(45deg, var(--primary), var(--secondary), var(--accent));
+            background-size: 200% 200%;
+            animation: gradientBorder 6s ease infinite;
+        }
+        
+        @keyframes gradientBorder {
+            0% {
+                background-position: 0% 50%;
+            }
+            50% {
+                background-position: 100% 50%;
+            }
+            100% {
+                background-position: 0% 50%;
+            }
+        }
+        
+        .glass {
+            background: var(--glass);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .glass-card {
+            background: rgba(15, 23, 42, 0.6);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 16px;
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+            transition: all 0.4s ease;
+        }
+        
+        .glass-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(99, 102, 241, 0.2);
+            border: 1px solid rgba(99, 102, 241, 0.2);
+        }
+        
+        .neo-button {
+            background: linear-gradient(145deg, var(--primary), var(--primary-dark));
+            box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.3),
+                        -5px -5px 15px rgba(255, 255, 255, 0.05);
+            transition: all 0.3s ease;
+        }
+        
+        .neo-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 8px 8px 20px rgba(0, 0, 0, 0.4),
+                        -8px -8px 20px rgba(255, 255, 255, 0.08);
+        }
+        
+        .neo-button:active {
+            transform: translateY(0);
+            box-shadow: inset 5px 5px 10px rgba(0, 0, 0, 0.2),
+                        inset -5px -5px 10px rgba(255, 255, 255, 0.05);
+        }
+        
+        .video-container {
+            position: relative;
+            overflow: hidden;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+        
+        .video-container video {
+            width: 100%;
+            display: block;
+            cursor: pointer;
+            transition: transform 0.5s ease;
+        }
+        
+        .video-container:hover video {
+            transform: scale(1.02);
+        }
+        
+        .video-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(2, 6, 23, 0.4);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.4s ease;
+        }
+        
+        .video-overlay:hover {
+            background: rgba(2, 6, 23, 0.2);
+        }
+        
+        .play-button {
+            width: 80px;
+            height: 80px;
+            background: rgba(99, 102, 241, 0.8);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.4s ease;
+            box-shadow: 0 0 30px rgba(99, 102, 241, 0.6);
+        }
+        
+        .play-button:hover {
+            transform: scale(1.1);
+            background: rgba(79, 70, 229, 0.9);
+            box-shadow: 0 0 40px rgba(99, 102, 241, 0.8);
+        }
+        
+        .video-controls {
+            display: flex;
+            justify-content: space-between;
+            padding: 15px;
+            background: rgba(15, 23, 42, 0.9);
+            border-top: 1px solid rgba(99, 102, 241, 0.2);
+        }
+        
+        .video-controls button {
+            background: none;
+            border: none;
+            color: var(--light);
+            cursor: pointer;
+            padding: 8px 12px;
+            transition: all 0.3s ease;
+            border-radius: 8px;
+        }
+        
+        .video-controls button:hover {
+            color: var(--secondary);
+            background: rgba(255, 255, 255, 0.05);
+        }
+        
+        .floating {
+            animation: floating 6s ease-in-out infinite;
+        }
+        
+        @keyframes floating {
+            0% {
+                transform: translateY(0px);
+            }
+            50% {
+                transform: translateY(-15px);
+            }
+            100% {
+                transform: translateY(0px);
+            }
+        }
+        
+        .pulse {
+            animation: pulse 3s infinite;
+        }
+        
+        @keyframes pulse {
+            0% {
+                box-shadow: 0 0 0 0 rgba(99, 102, 241, 0.7);
+            }
+            70% {
+                box-shadow: 0 0 0 20px rgba(99, 102, 241, 0);
+            }
+            100% {
+                box-shadow: 0 0 0 0 rgba(99, 102, 241, 0);
+            }
+        }
+        
+        .shape {
+            position: absolute;
+            border-radius: 50%;
+            background: linear-gradient(45deg, var(--primary), var(--secondary));
+            opacity: 0.15;
+            filter: blur(40px);
+            z-index: -1;
+        }
+        
+        .shape-1 {
+            top: 10%;
+            left: 5%;
+            width: 300px;
+            height: 300px;
+        }
+        
+        .shape-2 {
+            bottom: 20%;
+            right: 5%;
+            width: 400px;
+            height: 400px;
+            background: linear-gradient(45deg, var(--accent), var(--secondary));
+        }
+        
+        .shape-3 {
+            top: 50%;
+            left: 50%;
+            width: 500px;
+            height: 500px;
+            transform: translate(-50%, -50%);
+            background: radial-gradient(circle, var(--primary) 0%, rgba(99, 102, 241, 0) 70%);
+        }
+        
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            transition: all 0.3s ease;
+        }
+        
+        .navbar.scrolled {
+            background: var(--glass);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+        
+        .nav-link {
+            position: relative;
+            transition: all 0.3s ease;
+        }
+        
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            transition: width 0.3s ease;
+        }
+        
+        .nav-link:hover::after {
+            width: 100%;
+        }
+        
+        .contact-icon {
+            transition: all 0.3s ease;
+        }
+        
+        .contact-icon:hover {
+            transform: scale(1.2);
+        }
+        
+        .footer-link {
+            transition: all 0.3s ease;
+        }
+        
+        .footer-link:hover {
+            color: var(--secondary);
+        }
+    </style>
+</head>
+<body class="bg-grid">
+    <!-- Background shapes -->
+    <div class="shape shape-1"></div>
+    <div class="shape shape-2"></div>
+    <div class="shape shape-3"></div>
+    
+    <!-- Header -->
+    <header class="navbar py-6 px-4">
+        <div class="container mx-auto">
+            <div class="flex flex-col md:flex-row justify-between items-center">
+                <div class="flex items-center mb-4 md:mb-0">
+                    <div class="text-3xl font-bold mr-2 flex items-center">
+                        <span class="gradient-text">Tekin</span>
+                        <span class="text-white">formática</span>
+                        <div class="ml-3 w-10 h-10 relative">
+                            <div class="absolute inset-0 bg-indigo-500 rounded-full opacity-20 pulse"></div>
+                            <svg class="w-10 h-10 relative z-10" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M15 4.5V9.5L20 7L15 4.5Z" fill="#6366f1"/>
+                                <path d="M4 8H12V10H4V8Z" fill="#06b6d4"/>
+                                <path d="M4 12H20V14H4V12Z" fill="#6366f1"/>
+                                <path d="M4 16H12V18H4V16Z" fill="#06b6d4"/>
+                                <path d="M2 5C2 4.44772 2.44772 4 3 4H21C21.5523 4 22 4.44772 22 5V19C22 19.5523 21.5523 20 21 20H3C2.44772 20 2 19.5523 2 19V5Z" stroke="#6366f1" stroke-width="1.5"/>
+                            </svg>
+                        </div>
+                    </div>
+                </div>
+                <nav>
+                    <ul class="flex space-x-8">
+                        <li><a href="#videos" class="nav-link text-gray-300 hover:text-white transition-colors">Vídeos</a></li>
+                        <li><a href="#contato" class="nav-link text-gray-300 hover:text-white transition-colors">Contato</a></li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="pt-32 pb-24 relative overflow-hidden">
+        <div class="container mx-auto px-4 text-center relative z-10">
+            <h1 class="text-5xl md:text-6xl font-bold mb-8 leading-tight">
+                Sua <span class="gradient-text">Plataforma</span> de<br>Streaming Avançada
+            </h1>
+            <p class="text-xl text-gray-300 mb-10 max-w-2xl mx-auto">
+                Acesse demonstrações dos nossos aplicativos e descubra como a Tekinformática pode transformar sua experiência de streaming com tecnologia de ponta.
+            </p>
+            <a href="#videos" class="neo-button px-10 py-4 rounded-full text-white font-medium inline-block">
+                Explorar Demonstrações
+            </a>
+            
+            <!-- Floating elements -->
+            <div class="absolute top-20 left-10 w-20 h-20 border border-indigo-500/20 rounded-full floating" style="animation-delay: 0s;"></div>
+            <div class="absolute bottom-10 right-20 w-32 h-32 border border-cyan-500/20 rounded-full floating" style="animation-delay: 1s;"></div>
+            <div class="absolute top-40 right-10 w-16 h-16 border border-purple-500/20 rounded-full floating" style="animation-delay: 2s;"></div>
+        </div>
+    </section>
+
+    <!-- Videos Section -->
+    <section id="videos" class="py-20 relative">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl font-bold mb-4">
+                    <span class="gradient-text">Demonstrações</span> Exclusivas
+                </h2>
+                <p class="text-gray-400 max-w-2xl mx-auto">
+                    Conheça nossos aplicativos de streaming de última geração através destas demonstrações interativas.
+                </p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
+                <!-- Video Card 1 -->
+                <div class="gradient-border">
+                    <div class="glass-card h-full">
+                        <div class="video-container">
+                            <video id="video1" class="w-full h-64 object-cover" poster="" controlsList="nodownload" disablePictureInPicture>
+                                <source src="https://tekinf2025.github.io/videortv/p2x.mp4" type="video/mp4">
+                                Seu navegador não suporta vídeos HTML5.
+                            </video>
+                            <div class="video-overlay" id="overlay1">
+                                <div class="play-button">
+                                    <i class="fas fa-play text-white text-2xl"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="video-controls">
+                            <button class="play-pause-btn" data-video="video1">
+                                <i class="fas fa-play mr-2"></i> Reproduzir
+                            </button>
+                            <button class="fullscreen-btn" data-video="video1">
+                                <i class="fas fa-expand"></i> Tela cheia
+                            </button>
+                        </div>
+                        <div class="p-6">
+                            <h3 class="text-2xl font-semibold mb-3 gradient-text">Demonstração aplicativo P2X</h3>
+                        <p class="text-gray-400">Descubra as vantagens do aplicativo P2X, servidor com mais de 90 mil conteúdos.</p>
+                        <p class="text-gray-400">R$ 30,00 por mês.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Video Card 2 -->
+                <div class="gradient-border">
+                    <div class="glass-card h-full">
+                        <div class="video-container">
+                            <video id="video2" class="w-full h-64 object-cover" poster="" controlsList="nodownload" disablePictureInPicture>
+                                <source src="p2server.mp4" type="video/mp4">
+                                Seu navegador não suporta vídeos HTML5.
+                            </video>
+                            <div class="video-overlay" id="overlay2">
+                                <div class="play-button">
+                                    <i class="fas fa-play text-white text-2xl"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="video-controls">
+                            <button class="play-pause-btn" data-video="video2">
+                                <i class="fas fa-play mr-2"></i> Reproduzir
+                            </button>
+                            <button class="fullscreen-btn" data-video="video2">
+                                <i class="fas fa-expand"></i> Tela cheia
+                            </button>
+                        </div>
+                        <div class="p-6">
+                            <h3 class="text-2xl font-semibold mb-3 gradient-text">Demonstração aplicativo P2 Server</h3>
+                        <p class="text-gray-400">Descubra as vantagens do aplicativo P2S, servidor com mais de 110 mil conteúdos.</p>
+                        <p class="text-gray-400">R$ 35,00 por mês.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Video Card 3 -->
+                <div class="gradient-border">
+                    <div class="glass-card h-full">
+                        <div class="video-container">
+                            <video id="video3" class="w-full h-64 object-cover" poster="" controlsList="nodownload" disablePictureInPicture>
+                                <source src="https://tekinf2025.github.io/videortv/rtv.mp4" type="video/mp4">
+                                Seu navegador não suporta vídeos HTML5.
+                            </video>
+                            <div class="video-overlay" id="overlay3">
+                                <div class="play-button">
+                                    <i class="fas fa-play text-white text-2xl"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="video-controls">
+                            <button class="play-pause-btn" data-video="video3">
+                                <i class="fas fa-play mr-2"></i> Reproduzir
+                            </button>
+                            <button class="fullscreen-btn" data-video="video3">
+                                <i class="fas fa-expand"></i> Tela cheia
+                            </button>
+                        </div>
+                        <div class="p-6">
+                            <h3 class="text-2xl font-semibold mb-3 gradient-text">Demonstração aplicativo RTV</h3>
+                        <p class="text-gray-400">Descubra as vantagens do aplicativo RTV, servidor com mais de 150 mil conteúdos.</p>
+                        <p class="text-gray-400">R$ 40,00 por mês.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contato" class="py-20 relative">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl font-bold mb-4">
+                    Entre em <span class="gradient-text">Contato</span>
+                </h2>
+                <p class="text-gray-400 max-w-2xl mx-auto">
+                    Estamos prontos para ajudar você a implementar a melhor solução de streaming para o seu negócio.
+                </p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-10 max-w-4xl mx-auto">
+                <!-- WhatsApp -->
+                <div class="gradient-border">
+                    <div class="glass-card p-8 flex flex-col md:flex-row items-center md:items-start text-center md:text-left">
+                        <div class="w-16 h-16 rounded-full bg-gradient-to-br from-green-500 to-green-600 flex items-center justify-center mb-6 md:mb-0 md:mr-6 contact-icon">
+                            <i class="fab fa-whatsapp text-white text-3xl"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-2xl font-semibold mb-2 gradient-text">WhatsApp</h3>
+                            <p class="text-gray-400 mb-4">(21) 97628-6027</p>
+                            <a href="https://wa.me/5521976286027" target="_blank" class="neo-button px-6 py-3 rounded-lg text-white font-medium inline-block">
+                                <i class="fas fa-comment mr-2"></i> Enviar mensagem
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Email -->
+                <div class="gradient-border">
+                    <div class="glass-card p-8 flex flex-col md:flex-row items-center md:items-start text-center md:text-left">
+                        <div class="w-16 h-16 rounded-full bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center mb-6 md:mb-0 md:mr-6 contact-icon">
+                            <i class="fas fa-envelope text-white text-2xl"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-2xl font-semibold mb-2 gradient-text">Email</h3>
+                            <p class="text-gray-400 mb-4">tekin.formatica@hotmail.com</p>
+                            <a href="mailto:tekin.formatica@hotmail.com" class="neo-button px-6 py-3 rounded-lg text-white font-medium inline-block">
+                                <i class="fas fa-paper-plane mr-2"></i> Enviar e-mail
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="py-12 relative overflow-hidden">
+        <div class="container mx-auto px-4">
+            <div class="flex flex-col items-center">
+                <div class="flex items-center mb-8">
+                    <div class="text-2xl font-bold mr-2 flex items-center">
+                        <span class="gradient-text">Tekin</span>
+                        <span class="text-white">formática</span>
+                        <div class="ml-3 w-8 h-8 relative">
+                            <svg class="w-8 h-8" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M15 4.5V9.5L20 7L15 4.5Z" fill="#6366f1"/>
+                                <path d="M4 8H12V10H4V8Z" fill="#06b6d4"/>
+                                <path d="M4 12H20V14H4V12Z" fill="#6366f1"/>
+                                <path d="M4 16H12V18H4V16Z" fill="#06b6d4"/>
+                                <path d="M2 5C2 4.44772 2.44772 4 3 4H21C21.5523 4 22 4.44772 22 5V19C22 19.5523 21.5523 20 21 20H3C2.44772 20 2 19.5523 2 19V5Z" stroke="#6366f1" stroke-width="1.5"/>
+                            </svg>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="flex space-x-6 mb-8">
+                    <a href="#videos" class="footer-link text-gray-400 hover:text-white">Vídeos</a>
+                    <a href="#contato" class="footer-link text-gray-400 hover:text-white">Contato</a>
+                </div>
+                
+                <div class="w-24 h-1 bg-gradient-to-r from-indigo-500 to-cyan-400 rounded-full mb-8"></div>
+                
+                <p class="text-gray-500 text-sm">
+                    &copy; 2011 Tekinformática - Todos os direitos reservados.
+                </p>
+            </div>
+        </div>
+        
+        <!-- Footer shapes -->
+        <div class="absolute bottom-0 left-0 w-full h-1 bg-gradient-to-r from-indigo-500 via-cyan-400 to-indigo-500 opacity-30"></div>
+    </footer>
+
+    <script>
+        // Navbar scroll effect
+        window.addEventListener('scroll', function() {
+            const navbar = document.querySelector('.navbar');
+            if (window.scrollY > 50) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+        });
+        
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+        
+        // Video player functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            // Handle video overlays
+            const videoOverlays = document.querySelectorAll('.video-overlay');
+            videoOverlays.forEach(overlay => {
+                overlay.addEventListener('click', function() {
+                    const videoId = this.id.replace('overlay', 'video');
+                    const video = document.getElementById(videoId);
+                    
+                    if (video.paused) {
+                        video.play();
+                        this.style.opacity = '0';
+                    } else {
+                        video.pause();
+                        this.style.opacity = '1';
+                    }
+                });
+            });
+            
+            // Handle play/pause buttons
+            const playPauseButtons = document.querySelectorAll('.play-pause-btn');
+            playPauseButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const videoId = this.getAttribute('data-video');
+                    const video = document.getElementById(videoId);
+                    const overlay = document.getElementById('overlay' + videoId.replace('video', ''));
+                    const icon = this.querySelector('i');
+                    
+                    if (video.paused) {
+                        video.play();
+                        overlay.style.opacity = '0';
+                        icon.classList.remove('fa-play');
+                        icon.classList.add('fa-pause');
+                        this.innerHTML = '<i class="fas fa-pause mr-2"></i> Pausar';
+                    } else {
+                        video.pause();
+                        overlay.style.opacity = '1';
+                        icon.classList.remove('fa-pause');
+                        icon.classList.add('fa-play');
+                        this.innerHTML = '<i class="fas fa-play mr-2"></i> Reproduzir';
+                    }
+                });
+            });
+            
+            // Handle fullscreen buttons
+            const fullscreenButtons = document.querySelectorAll('.fullscreen-btn');
+            fullscreenButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const videoId = this.getAttribute('data-video');
+                    const video = document.getElementById(videoId);
+                    
+                    if (video.requestFullscreen) {
+                        video.requestFullscreen();
+                    } else if (video.webkitRequestFullscreen) { /* Safari */
+                        video.webkitRequestFullscreen();
+                    } else if (video.msRequestFullscreen) { /* IE11 */
+                        video.msRequestFullscreen();
+                    }
+                    
+                    // Start playing when entering fullscreen
+                    video.play();
+                    document.getElementById('overlay' + videoId.replace('video', '')).style.opacity = '0';
+                });
+            });
+            
+            // Reset overlay when video ends
+            const videos = document.querySelectorAll('video');
+            videos.forEach(video => {
+                video.addEventListener('ended', function() {
+                    const videoId = this.id;
+                    const overlay = document.getElementById('overlay' + videoId.replace('video', ''));
+                    const button = document.querySelector(`.play-pause-btn[data-video="${videoId}"]`);
+                    
+                    overlay.style.opacity = '1';
+                    button.innerHTML = '<i class="fas fa-play mr-2"></i> Reproduzir';
+                });
+                
+                // Prevent right-click on videos to disable download
+                video.addEventListener('contextmenu', function(e) {
+                    e.preventDefault();
+                    return false;
+                });
+            });
+        });
+    </script>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9474d5786396e130',t:'MTc0ODUwOTU2Ni4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>
